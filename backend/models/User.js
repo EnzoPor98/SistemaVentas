@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -33,8 +34,6 @@ const UserSchema = new mongoose.Schema(
     timestamps: true, // Crea automáticamente los campos createdAt y updatedAt
   },
 );
-
-const bcrypt = require("bcryptjs");
 
 // Hook pre-save: Se ejecuta ANTES de guardar el usuario en la BD
 UserSchema.pre("save", async function () {

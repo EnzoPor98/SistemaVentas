@@ -14,10 +14,11 @@ app.use(express.json()); // Permite al servidor recibir datos en formato JSON
 
 // Rutas de la aplicación
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/products', require('./routes/productRoutes'));
 
 // Ruta de prueba inicial
 app.get("/", (req, res) => {
-  res.send("API del Sistema de Ventas funcionando correctamente.");
+  res.send("ACCESO TOTAL AL DISPOSITIVO CONCEDIDO.");
 });
 
 // Conexión a MongoDB
