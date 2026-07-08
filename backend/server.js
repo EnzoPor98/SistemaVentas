@@ -15,6 +15,7 @@ app.use(express.json()); // Permite al servidor recibir datos en formato JSON
 // Rutas de la aplicación
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
+app.use('/api/clients', require('./routes/clientRoutes'));
 
 // Ruta de prueba inicial
 app.get("/", (req, res) => {

@@ -22,8 +22,8 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["admin", "vendedor"], // Solo permite estos dos roles
-      default: "vendedor",
+      enum: ["admin", "vendedor", "cliente"],
+      default: "cliente",
     },
     status: {
       type: Boolean,
