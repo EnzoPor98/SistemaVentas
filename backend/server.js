@@ -13,13 +13,14 @@ app.use(cors());
 app.use(express.json()); // Permite al servidor recibir datos en formato JSON
 
 // Rutas de la aplicación
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/products', require('./routes/productRoutes'));
-app.use('/api/clients', require('./routes/clientRoutes'));
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/products", require("./routes/productRoutes"));
+app.use("/api/clients", require("./routes/clientRoutes"));
+app.use("/api/sales", require("./routes/saleRoutes"));
 
 // Ruta de prueba inicial
 app.get("/", (req, res) => {
-  res.send("ACCESO TOTAL AL DISPOSITIVO CONCEDIDO.");
+  res.send("PERMISO CONCEDIDO: ACCESO TOTAL AL DISPOSITIVO.");
 });
 
 // Conexión a MongoDB
