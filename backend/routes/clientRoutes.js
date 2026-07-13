@@ -17,3 +17,5 @@ router.route("/").get(getClients).post(createClient);
 
 // Rutas para /api/clients/:id
 router.route("/:id").get(getClientById).put(updateClient).delete(deleteClient);
+
+module.exports = router;

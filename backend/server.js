@@ -39,3 +39,7 @@ mongoose
   .catch((error) => {
     console.error("❌ Error al conectar a MongoDB:", error.message);
   });
+
+  /*
+  USER TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNGIzMzlkMTA1N2QzMWQxMjljZDc5NCIsImlhdCI6MTc4MzkxNTY4NSwiZXhwIjoxNzg2NTA3Njg1fQ.MirD1rgy2SDFSH0FK9w3Er1NvL6VPKkNnupqdcXehRM
+  */
