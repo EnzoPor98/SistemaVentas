@@ -74,11 +74,75 @@ exports.getSales = async (req, res) => {
       .populate("items.product", "name sku");
     res.json(sales);
   } catch (error) {
+    res.status(500).json({
+      message: "Error al obtener historial de ventas",
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Obtener estadísticas del dashboard (Solo Admin)
+// @route   GET /api/sales/dashboard
+// @access  Privado/Admin
+exports.getDashboardStats = async (req, res) => {
+  try {
+    // 1. Calcular Ingresos Totales y Total de Transacciones
+    const generalStats = await Sale.aggregate([
+      {
+        $group: {
+          _id: null, // Agrupar todas las ventas juntas
+          totalIngresos: { $sum: "$total" },
+          cantidadVentas: { $count: {} },
+        },
+      },
+    ]);
+
+    // 2. Calcular los Productos Más Vendidos
+    const topProducts = await Sale.aggregate([
+      { $unwind: "$items" }, // Descompone el array de items para analizar producto por producto
+      {
+        $group: {
+          _id: "$items.product", // Agrupa por el ID del producto
+          unidadesVendidas: { $sum: "$items.quantity" },
+          ingresosGenerados: {
+            $sum: { $multiply: ["$items.price", "$items.quantity"] },
+          },
+        },
+      },
+      { $sort: { unidadesVendidas: -1 } }, // Ordena de mayor a menor cantidad
+      { $limit: 5 }, // Trae solo los 5 principales
+      {
+        $lookup: {
+          // Hace un "Join" con la colección de productos para traer el nombre real
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "detallesProducto",
+        },
+      },
+      { $unwind: "$detallesProducto" },
+      {
+        $project: {
+          _id: 1,
+          unidadesVendidas: 1,
+          ingresosGenerados: 1,
+          name: "$detallesProducto.name",
+          sku: "$detallesProducto.sku",
+        },
+      },
+    ]);
+
+    // Estructurar la respuesta final limpia
+    res.json({
+      totales: {
+        ingresos: generalStats[0]?.totalIngresos || 0,
+        ventasRealizadas: generalStats[0]?.cantidadVentas || 0,
+      },
+      topProductos: topProducts,
+    });
+  } catch (error) {
     res
       .status(500)
-      .json({
-        message: "Error al obtener historial de ventas",
-        error: error.message,
-      });
+      .json({ message: "Error al generar el reporte", error: error.message });
   }
 };
